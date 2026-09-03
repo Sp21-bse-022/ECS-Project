@@ -1,0 +1,7 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3968:3968"
+    environment:
+      NODE_ENV: production
