@@ -4,7 +4,7 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
-  "executionRoleArn": "REPLACE_WITH_ecsTaskExecutionRole_ARN",
+  "executionRoleArn": "arn:aws:iam::656972167486:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "name": "ecs-learning-app",

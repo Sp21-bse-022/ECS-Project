@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const os = require("os");
 
 const app = express();
@@ -9,6 +10,11 @@ const METADATA_URI = process.env.ECS_CONTAINER_METADATA_URI_V4;
 
 const startedAt = new Date();
 let requestCount = 0;
+
+// There's no ALB in front of this app, so the S3-hosted frontend calls the
+// task's IP directly from the browser — that's a cross-origin request, hence CORS.
+// CORS_ORIGIN defaults to "*" for learning; lock it to the S3 site's origin for anything real.
+app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
 
 app.use((req, res, next) => {
   requestCount += 1;
