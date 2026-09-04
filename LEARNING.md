@@ -145,7 +145,7 @@ it'll show real ECS task metadata because ECS injects
 ### Step 2 — Create an ECR repository
 
 ```bash
-aws ecr create-repository --repository-name ecs-learning-app --region <your-region>
+aws ecr create-repository --repository-name ecs1/ecs-project --region <your-region>
 ```
 
 ### Step 3 — Create an ECS cluster (Fargate)
@@ -193,7 +193,7 @@ cat > ci-policy.json <<EOF
     { "Sid": "ECRPush", "Effect": "Allow", "Action": [
         "ecr:BatchCheckLayerAvailability", "ecr:PutImage", "ecr:InitiateLayerUpload",
         "ecr:UploadLayerPart", "ecr:CompleteLayerUpload", "ecr:BatchGetImage"
-      ], "Resource": "arn:aws:ecr:<region>:<account-id>:repository/ecs-learning-app" },
+      ], "Resource": "arn:aws:ecr:<region>:<account-id>:repository/ecs1/ecs-project" },
     { "Sid": "ECSDeploy", "Effect": "Allow", "Action": [
         "ecs:RegisterTaskDefinition", "ecs:DescribeTaskDefinition",
         "ecs:DescribeServices", "ecs:UpdateService"
@@ -220,7 +220,7 @@ variables → Actions** and add:
 | Secret | `AWS_ACCESS_KEY_ID` | from the command above |
 | Secret | `AWS_SECRET_ACCESS_KEY` | from the command above |
 | Variable | `AWS_REGION` | e.g. `us-east-1` |
-| Variable | `ECR_REPOSITORY` | `ecs-learning-app` |
+| Variable | `ECR_REPOSITORY` | `ecs1/ecs-project` |
 | Variable | `ECS_CLUSTER` | `ecs-learning-cluster` |
 | Variable | `ECS_SERVICE` | `ecs-learning-app-service` |
 
@@ -239,9 +239,9 @@ task definition revision and one image in ECR to point at first:
 aws ecr get-login-password --region <region> \
   | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
 
-docker build -t ecs-learning-app backend
-docker tag ecs-learning-app:latest <account-id>.dkr.ecr.<region>.amazonaws.com/ecs-learning-app:bootstrap
-docker push <account-id>.dkr.ecr.<region>.amazonaws.com/ecs-learning-app:bootstrap
+docker build -t ecs-project backend
+docker tag ecs-project:latest <account-id>.dkr.ecr.<region>.amazonaws.com/ecs1/ecs-project:bootstrap
+docker push <account-id>.dkr.ecr.<region>.amazonaws.com/ecs1/ecs-project:bootstrap
 ```
 
 Edit the `image` field in `backend/ecs/task-definition.json` to that
@@ -348,7 +348,7 @@ update the frontend's saved backend URL.
 aws ecs update-service --cluster ecs-learning-cluster --service ecs-learning-app-service --desired-count 0
 aws ecs delete-service --cluster ecs-learning-cluster --service ecs-learning-app-service
 aws ecs delete-cluster --cluster-name ecs-learning-cluster
-aws ecr delete-repository --repository-name ecs-learning-app --force
+aws ecr delete-repository --repository-name ecs1/ecs-project --force
 
 aws s3 rm s3://<your-unique-bucket-name> --recursive
 aws s3 rb s3://<your-unique-bucket-name>

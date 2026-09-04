@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "ecs-learning-app",
-      "image": "REPLACE_WITH_ECR_IMAGE_URI:latest",
+      "image": "656972167486.dkr.ecr.us-east-1.amazonaws.com/ecs1/ecs-project:bootstrap",
       "essential": true,
       "portMappings": [
         {
@@ -31,7 +31,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/ecs-learning-app",
-          "awslogs-region": "REPLACE_WITH_AWS_REGION",
+          "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs",
           "awslogs-create-group": "true"
         }
