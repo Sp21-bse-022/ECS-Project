@@ -39,14 +39,6 @@ jobs:
 
       # Reuses backend/ecs/task-definition.json (executionRoleArn/region already
       # filled in by hand) and just swaps in the image tag built above.
-      - name: Render new task definition
-        id: render-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: backend/ecs/task-definition.json
-          container-name: Main
-          image: ${{ steps.build-image.outputs.image }}
-
       - name: Deploy to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
